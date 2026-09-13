@@ -6,3 +6,4 @@ data/*.sqlite-journal
 *.log
 data/*.sqlite-wal
 data/*.sqlite-shm
+REEL_SCRIPT.md
