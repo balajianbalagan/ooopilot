@@ -1,0 +1,42 @@
+{
+  "name": "ooo-pilot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "OOO-Pilot - an AI work proxy that takes real phone calls for an out-of-office employee, powered by CALL-E.",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "seed": "tsx src/seed.ts",
+    "sync:jira": "tsx scripts/sync-jira.ts",
+    "mcp": "tsx src/mcp/server.ts",
+    "demo:inbound": "tsx scripts/demo-inbound.ts",
+    "typecheck": "tsc --noEmit",
+    "preflight": "tsx scripts/preflight.ts",
+    "test:call": "tsx scripts/test-call.ts",
+    "seed:jira": "tsx scripts/seed-jira.ts",
+    "rehearse": "tsx scripts/rehearse.ts",
+    "check:scopes": "tsx scripts/check-scopes.ts",
+    "check:channels": "tsx scripts/check-channels.ts",
+    "inspect:call": "tsx scripts/inspect-call.ts",
+    "dump:payload": "tsx scripts/dump-payload.ts"
+  },
+  "dependencies": {
+    "@call-e/calle": "^0.7.0",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@slack/bolt": "^5.1.0",
+    "@slack/web-api": "^8.1.1",
+    "better-sqlite3": "^11.0.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "openai": "^4.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.11",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

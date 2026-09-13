@@ -1,0 +1,606 @@
+<title>OOO-Pilot Brand Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  /* ---- Dark-first tokens. Bare :root is the dark base; light is the redefinition. ---- */
+  :root {
+    --ink:        #0E1116;
+    --surface:    #161B24;
+    --surface-2:  #1B2230;
+    --line:       #262D3A;
+    --line-soft:  #1F2532;
+    --text:       #E6EAF2;
+    --muted:      #96A0B5;
+    --signal:     #3F7CF7;
+    --signal-ink: #2D6EF5;
+    --verified:   #4ADE80;
+    --claim:      #FBBF24;
+    --conflict:   #F87171;
+    --swatch-ring: rgba(255,255,255,.10);
+
+    --f-display: Archivo, 'Helvetica Neue', Arial, sans-serif;
+    --f-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --f-mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --ink:        #F5F6FA;
+      --surface:    #FFFFFF;
+      --surface-2:  #EEF1F7;
+      --line:       #DCE1EB;
+      --line-soft:  #E7EBF2;
+      --text:       #0E1116;
+      --muted:      #5A6577;
+      --signal:     #2D6EF5;
+      --signal-ink: #1E4FD0;
+      --verified:   #1A7F43;
+      --claim:      #8A5A00;
+      --conflict:   #C03434;
+      --swatch-ring: rgba(14,17,22,.12);
+    }
+  }
+  :root[data-theme="light"] {
+    --ink:        #F5F6FA;
+    --surface:    #FFFFFF;
+    --surface-2:  #EEF1F7;
+    --line:       #DCE1EB;
+    --line-soft:  #E7EBF2;
+    --text:       #0E1116;
+    --muted:      #5A6577;
+    --signal:     #2D6EF5;
+    --signal-ink: #1E4FD0;
+    --verified:   #1A7F43;
+    --claim:      #8A5A00;
+    --conflict:   #C03434;
+    --swatch-ring: rgba(14,17,22,.12);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--text);
+    font-family: var(--f-body);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-inline: 24px;
+    padding-block: 56px 96px;
+  }
+  h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
+  p { margin: 0; }
+  a { color: var(--signal); }
+
+  /* ---- Section rhythm ---- */
+  .sheet { display: flex; flex-direction: column; gap: 76px; }
+  section { display: flex; flex-direction: column; gap: 22px; }
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+  h2 { font-size: 26px; font-weight: 600; letter-spacing: -.02em; }
+  .lede { color: var(--muted); max-width: 62ch; }
+
+  /* ---- Masthead ---- */
+  .masthead { display: flex; flex-direction: column; gap: 28px; }
+  .lockup { display: flex; align-items: center; gap: 18px; }
+  .lockup .name {
+    font-family: var(--f-display);
+    font-size: clamp(30px, 6vw, 44px);
+    font-weight: 600;
+    letter-spacing: -.03em;
+    line-height: 1;
+  }
+  .positioning {
+    font-family: var(--f-display);
+    font-size: clamp(20px, 3.6vw, 28px);
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: -.015em;
+    max-width: 22ch;
+  }
+  .positioning em { font-style: normal; color: var(--signal); }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--muted);
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ---- Mark anatomy ---- */
+  .anatomy { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .anatomy figure { margin: 0; background: var(--surface); padding: 26px 20px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+  .anatomy figcaption { font-size: 13px; color: var(--muted); }
+  .anatomy figcaption b { display: block; color: var(--text); font-weight: 600; font-size: 13px; }
+  .anatomy svg { width: 68px; height: 68px; }
+
+  /* ---- Logo board ---- */
+  .board { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .tile {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .tile .stage {
+    flex: 1;
+    min-height: 150px;
+    display: grid;
+    place-items: center;
+    padding: 26px;
+  }
+  .stage--dark  { background: #0E1116; }
+  .stage--light { background: #F5F6FA; }
+  .stage--blue  { background: #2D6EF5; }
+  .tile .cap {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    color: var(--muted);
+    padding: 10px 14px;
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .wordmark { display: flex; align-items: center; gap: 12px; font-family: var(--f-display); font-weight: 600; letter-spacing: -.03em; }
+
+  /* ---- Spec rows (clear space, sizes) ---- */
+  .specs { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px; }
+  .panel { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 24px; display: flex; flex-direction: column; gap: 18px; }
+  .panel h3 { font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
+  .panel p { font-size: 13.5px; color: var(--muted); }
+  .clearspace { display: grid; place-items: center; padding: 10px 0; }
+  .sizes { display: flex; align-items: flex-end; gap: 26px; flex-wrap: wrap; }
+  .size { display: flex; flex-direction: column; align-items: center; gap: 9px; }
+  .size span { font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+
+  /* ---- Misuse ---- */
+  .misuse { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+  .dont { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+  .dont .frame { height: 76px; display: grid; place-items: center; }
+  .dont p { font-size: 12.5px; color: var(--muted); }
+  .dont .x { color: var(--conflict); font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; }
+
+  /* ---- Color ---- */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .sw {
+    border: 0;
+    text-align: left;
+    font: inherit;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
+  .sw:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+  .sw .chip { height: 74px; box-shadow: inset 0 0 0 1px var(--swatch-ring); }
+  .sw .info { padding: 11px 13px 13px; display: flex; flex-direction: column; gap: 2px; }
+  .sw .nm { font-size: 13px; font-weight: 600; }
+  .sw .hex { font-family: var(--f-mono); font-size: 11.5px; color: var(--muted); text-transform: uppercase; }
+  .sw .role { font-size: 11.5px; color: var(--muted); }
+
+  .states { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .state-row { background: var(--surface); padding: 16px 18px; display: grid; grid-template-columns: 150px 1fr; gap: 18px; align-items: baseline; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 999px;
+    border: 1px solid currentColor;
+  }
+  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .pill--verified { color: var(--verified); }
+  .pill--claim { color: var(--claim); }
+  .pill--conflict { color: var(--conflict); }
+  .state-row .desc { font-size: 13.5px; color: var(--muted); }
+  .state-row .desc code { font-family: var(--f-mono); font-size: 12px; color: var(--text); }
+
+  /* ---- Type ---- */
+  .type-stack { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .type-row { background: var(--surface); padding: 20px 22px; display: grid; grid-template-columns: 160px 1fr; gap: 20px; align-items: center; }
+  .type-row .spec { font-family: var(--f-mono); font-size: 11px; color: var(--muted); line-height: 1.7; }
+  .sp-display { font-family: var(--f-display); font-size: 30px; font-weight: 600; letter-spacing: -.025em; line-height: 1.1; }
+  .sp-body { font-family: var(--f-body); font-size: 15px; line-height: 1.6; max-width: 60ch; }
+  .sp-mono { font-family: var(--f-mono); font-size: 13.5px; }
+  .sp-label { font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+
+  /* ---- Voice ---- */
+  .voice { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .quote { border-left: 2px solid var(--signal); padding: 4px 0 4px 18px; display: flex; flex-direction: column; gap: 8px; }
+  .quote .said { font-size: 15px; }
+  .quote .tag { font-family: var(--f-mono); font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+  .rules { display: flex; flex-direction: column; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .rule { background: var(--surface); padding: 15px 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; font-size: 13.5px; }
+  .rule .yes { color: var(--text); }
+  .rule .no { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--conflict); text-decoration-thickness: 1px; }
+
+  /* ---- Application mock ---- */
+  .app { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); overflow: hidden; }
+  .app .bar { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); background: var(--surface-2); font-size: 13px; }
+  .app .bar .who { font-weight: 600; }
+  .app .bar .badge { font-family: var(--f-mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+  .app .body { padding: 18px 16px; display: flex; flex-direction: column; gap: 14px; }
+  .app .title { font-family: var(--f-display); font-weight: 600; font-size: 15px; }
+  .kv { display: grid; grid-template-columns: 96px 1fr; gap: 6px 14px; font-size: 13.5px; }
+  .kv dt { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+  .kv dd { margin: 0; }
+  .btn {
+    align-self: flex-start;
+    font-family: var(--f-body); font-size: 13px; font-weight: 600;
+    color: #fff; background: var(--signal-ink);
+    border: 0; border-radius: 8px; padding: 9px 16px; cursor: pointer;
+  }
+  .btn:hover { background: var(--signal); }
+  .btn:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+  /* ---- Assets ---- */
+  .files { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .files th, .files td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line-soft); }
+  .files th { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 400; }
+  .files td:first-child { font-family: var(--f-mono); font-size: 12.5px; white-space: nowrap; }
+  .files td:last-child { color: var(--muted); }
+  .files tr:last-child td { border-bottom: 0; }
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(8px);
+    background: var(--text); color: var(--ink);
+    font-family: var(--f-mono); font-size: 12px;
+    padding: 8px 14px; border-radius: 999px;
+    opacity: 0; pointer-events: none; transition: opacity .18s ease, transform .18s ease;
+  }
+  .toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+
+  @media (max-width: 760px) {
+    .anatomy { grid-template-columns: repeat(2, 1fr); }
+    .specs { grid-template-columns: 1fr; }
+    .state-row, .type-row, .rule { grid-template-columns: 1fr; gap: 8px; }
+  }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="tile-grad" x1="0" y1="0" x2="0" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3F7CF7"/>
+      <stop offset="1" stop-color="#1E4FD0"/>
+    </linearGradient>
+    <symbol id="mark" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="17" fill="none" stroke="currentColor" stroke-opacity=".55"
+              stroke-width="3.5" stroke-linecap="round" stroke-dasharray="74.8 32" transform="rotate(54 32 32)"/>
+      <circle cx="32" cy="32" r="10" fill="none" stroke="currentColor" stroke-opacity=".9" stroke-width="3.5"/>
+      <circle cx="32" cy="32" r="4" fill="currentColor"/>
+    </symbol>
+    <symbol id="tile" viewBox="0 0 64 64">
+      <rect width="64" height="64" rx="15" fill="url(#tile-grad)"/>
+      <circle cx="32" cy="32" r="17" fill="none" stroke="#fff" stroke-opacity=".5"
+              stroke-width="3.5" stroke-linecap="round" stroke-dasharray="74.8 32" transform="rotate(54 32 32)"/>
+      <circle cx="32" cy="32" r="10" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="3.5"/>
+      <circle cx="32" cy="32" r="4" fill="#fff"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+<div class="sheet">
+
+  <header class="masthead">
+    <div class="lockup">
+      <svg width="56" height="56" aria-hidden="true"><use href="#tile"/></svg>
+      <span class="name">OOO-Pilot</span>
+    </div>
+    <p class="positioning">A temporary AI work proxy that takes <em>real phone calls</em> for an employee who is out of office.</p>
+    <div class="meta">
+      <span>Brand kit v1.0</span>
+      <span>Built on CALL-E · Slack · Jira · SQLite</span>
+      <span>Mark: the open ring</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="eyebrow">01 — The mark</div>
+    <h2>Three rings, one of them broken</h2>
+    <p class="lede">OOO is an absence, so the mark is built around a gap. Three concentric forms read as the three O&nbsp;s of <b>OOO</b> and as an outgoing call signal at the same time. The break in the outer ring is the load-bearing detail — close it and the mark stops meaning anything.</p>
+    <div class="anatomy">
+      <figure>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="4" fill="currentColor"/></svg>
+        <figcaption><b>The core</b>The request. A coworker needs an answer today.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="10" fill="none" stroke="currentColor" stroke-width="3.5"/></svg>
+        <figcaption><b>The closed ring</b>Verified context. Jira is authoritative and unbroken.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="17" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="74.8 32" transform="rotate(54 32 32)"/></svg>
+        <figcaption><b>The open ring</b>The person who isn&rsquo;t there — and the call going out through the gap.</figcaption>
+      </figure>
+      <figure>
+        <svg viewBox="0 0 64 64" aria-hidden="true" style="color:var(--signal)"><use href="#mark"/></svg>
+        <figcaption><b>Assembled</b>Gap always at 3 o&rsquo;clock. Never rotate it.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">02 — Variants</div>
+    <h2>Five files cover everything</h2>
+    <p class="lede">The gradient tile is the primary. Mono is for anywhere the tile would fight its surroundings — a Slack sidebar, a stamped doc header, a single-colour print run.</p>
+    <div class="board">
+      <div class="tile">
+        <div class="stage stage--dark"><svg width="72" height="72" aria-hidden="true"><use href="#tile"/></svg></div>
+        <div class="cap"><span>logo-icon.svg</span><span>primary</span></div>
+      </div>
+      <div class="tile">
+        <div class="stage stage--light"><svg width="72" height="72" aria-hidden="true" style="color:#0E1116"><use href="#mark"/></svg></div>
+        <div class="cap"><span>logo-icon-mono.svg</span><span>on light</span></div>
+      </div>
+      <div class="tile">
+        <div class="stage stage--dark"><svg width="72" height="72" aria-hidden="true" style="color:#E6EAF2"><use href="#mark"/></svg></div>
+        <div class="cap"><span>logo-icon-mono.svg</span><span>on ink</span></div>
+      </div>
+      <div class="tile">
+        <div class="stage stage--blue"><svg width="72" height="72" aria-hidden="true" style="color:#fff"><use href="#mark"/></svg></div>
+        <div class="cap"><span>knockout</span><span>on signal</span></div>
+      </div>
+      <div class="tile">
+        <div class="stage stage--dark">
+          <span class="wordmark" style="color:#E6EAF2;font-size:22px">
+            <svg width="34" height="34" aria-hidden="true"><use href="#tile"/></svg>OOO-Pilot
+          </span>
+        </div>
+        <div class="cap"><span>logo-lockup-dark.svg</span><span>horizontal</span></div>
+      </div>
+      <div class="tile">
+        <div class="stage stage--light">
+          <span class="wordmark" style="color:#0E1116;font-size:22px">
+            <svg width="34" height="34" aria-hidden="true"><use href="#tile"/></svg>OOO-Pilot
+          </span>
+        </div>
+        <div class="cap"><span>logo-lockup-light.svg</span><span>horizontal</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">03 — Construction</div>
+    <h2>Clear space and minimum size</h2>
+    <div class="specs">
+      <div class="panel">
+        <h3>Clear space</h3>
+        <p>Keep a margin equal to the radius of the inner ring — one quarter of the mark&rsquo;s width — clear on all four sides. Nothing crosses the dashed line: no type, no rule, no avatar stack.</p>
+        <div class="clearspace">
+          <div style="position:relative;padding:22px;border:1px dashed var(--line);border-radius:16px">
+            <svg width="88" height="88" aria-hidden="true" style="display:block"><use href="#tile"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Minimum size</h3>
+        <p>At 16&nbsp;px the outer ring drops away and the favicon carries the dot and one open ring. Below 16&nbsp;px, use the core dot alone.</p>
+        <div class="sizes">
+          <div class="size"><svg width="16" height="16" aria-hidden="true" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#2D6EF5"/><circle cx="16" cy="16" r="9" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="39.6 17" transform="rotate(54 16 16)"/><circle cx="16" cy="16" r="2.6" fill="#fff"/></svg><span>16</span></div>
+          <div class="size"><svg width="32" height="32" aria-hidden="true"><use href="#tile"/></svg><span>32</span></div>
+          <div class="size"><svg width="48" height="48" aria-hidden="true"><use href="#tile"/></svg><span>48</span></div>
+          <div class="size"><svg width="64" height="64" aria-hidden="true"><use href="#tile"/></svg><span>64</span></div>
+        </div>
+        <p style="font-family:var(--f-mono);font-size:11.5px">Tile radius stays at 23.4% of the tile width at every size.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">04 — Misuse</div>
+    <h2>Four ways to break it</h2>
+    <div class="misuse">
+      <div class="dont">
+        <div class="frame"><svg width="64" height="64" aria-hidden="true" style="color:var(--text);transform:scaleX(1.45)"><use href="#mark"/></svg></div>
+        <div class="x">Don&rsquo;t</div>
+        <p>Stretch or squash. Scale both axes together.</p>
+      </div>
+      <div class="dont">
+        <div class="frame"><svg width="64" height="64" aria-hidden="true" style="color:var(--text);transform:rotate(38deg)"><use href="#mark"/></svg></div>
+        <div class="x">Don&rsquo;t</div>
+        <p>Rotate. The gap sits at 3 o&rsquo;clock, always.</p>
+      </div>
+      <div class="dont">
+        <div class="frame"><svg width="64" height="64" aria-hidden="true" style="color:var(--verified)"><use href="#mark"/></svg></div>
+        <div class="x">Don&rsquo;t</div>
+        <p>Draw it in a state colour. Green, amber and red mean something specific.</p>
+      </div>
+      <div class="dont">
+        <div class="frame">
+          <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true" style="color:var(--text)">
+            <circle cx="32" cy="32" r="17" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="3.5"/>
+            <circle cx="32" cy="32" r="10" fill="none" stroke="currentColor" stroke-opacity=".9" stroke-width="3.5"/>
+            <circle cx="32" cy="32" r="4" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="x">Don&rsquo;t</div>
+        <p>Close the outer ring. Without the gap it&rsquo;s a target, not an absence.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">05 — Colour</div>
+    <h2>One accent, six neutrals</h2>
+    <p class="lede">The palette is dark-first because the product lives in Slack and a terminal. Signal Blue is the only brand colour and it is spent on actions — dialling, calling, confirming. The neutrals are slate biased toward the same hue, so nothing reads as unconsidered grey. Click a swatch to copy the hex.</p>
+    <div class="swatches" id="swatches">
+      <button class="sw" data-hex="#2D6EF5"><span class="chip" style="background:#2D6EF5"></span><span class="info"><span class="nm">Signal Blue</span><span class="hex">#2D6EF5</span><span class="role">Primary. Buttons, links, the tile.</span></span></button>
+      <button class="sw" data-hex="#3F7CF7"><span class="chip" style="background:#3F7CF7"></span><span class="info"><span class="nm">Signal Lit</span><span class="hex">#3F7CF7</span><span class="role">Hover, gradient top stop.</span></span></button>
+      <button class="sw" data-hex="#1E4FD0"><span class="chip" style="background:#1E4FD0"></span><span class="info"><span class="nm">Signal Deep</span><span class="hex">#1E4FD0</span><span class="role">Pressed, gradient bottom stop.</span></span></button>
+      <button class="sw" data-hex="#0E1116"><span class="chip" style="background:#0E1116"></span><span class="info"><span class="nm">Dial Ink</span><span class="hex">#0E1116</span><span class="role">Page ground.</span></span></button>
+      <button class="sw" data-hex="#161B24"><span class="chip" style="background:#161B24"></span><span class="info"><span class="nm">Surface</span><span class="hex">#161B24</span><span class="role">Panels and cards.</span></span></button>
+      <button class="sw" data-hex="#262D3A"><span class="chip" style="background:#262D3A"></span><span class="info"><span class="nm">Line</span><span class="hex">#262D3A</span><span class="role">Hairlines and borders.</span></span></button>
+      <button class="sw" data-hex="#E6EAF2"><span class="chip" style="background:#E6EAF2"></span><span class="info"><span class="nm">Text</span><span class="hex">#E6EAF2</span><span class="role">Body copy on ink.</span></span></button>
+      <button class="sw" data-hex="#96A0B5"><span class="chip" style="background:#96A0B5"></span><span class="info"><span class="nm">Text Muted</span><span class="hex">#96A0B5</span><span class="role">Labels, captions, metadata.</span></span></button>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">06 — State colour</div>
+    <h2>Three colours that are not brand colours</h2>
+    <p class="lede">These carry the one distinction the whole product rests on: <code style="font-family:var(--f-mono);font-size:12.5px">knowledge_items.verified</code>. They are never used decoratively, never used on the logo, and never swapped for the accent.</p>
+    <div class="states">
+      <div class="state-row">
+        <span class="pill pill--verified"><span class="dot"></span>Verified</span>
+        <span class="desc">Jira-derived fact. <code>source_type = JIRA</code>, <code>verified = 1</code>. The agent may state it as fact on the call.</span>
+      </div>
+      <div class="state-row">
+        <span class="pill pill--claim"><span class="dot"></span>Claim</span>
+        <span class="desc">Something a coworker said on the phone. <code>source_type = CONVERSATION</code>, <code>verified = 0</code>. Stays unverified until a human confirms it.</span>
+      </div>
+      <div class="state-row">
+        <span class="pill pill--conflict"><span class="dot"></span>Discrepancy</span>
+        <span class="desc">Jira and the call disagree. The only state that interrupts someone: <code>PHX-121</code> reads In Progress, but Karthik said testing is complete.</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">07 — Typography</div>
+    <h2>Archivo, IBM Plex Sans, IBM Plex Mono</h2>
+    <p class="lede">Archivo is the voice: slightly squared, engineered, confident at display sizes without being loud. Plex Sans handles everything that has to be read carefully. Plex Mono is reserved for things the machine produced — issue keys, JQL, timestamps, transcript turns — so monospace itself signals provenance.</p>
+    <div class="type-stack">
+      <div class="type-row">
+        <div class="spec">Archivo 600<br>−2.5% tracking<br>Headings, wordmark</div>
+        <div class="sp-display">Arun is out. The work isn&rsquo;t.</div>
+      </div>
+      <div class="type-row">
+        <div class="spec">IBM Plex Sans 400<br>15px / 1.6<br>Body, Slack blocks</div>
+        <div class="sp-body">On the call, the agent explains the verified project status, answers follow-ups from the supplied context only, asks what Arun should know, and reads back the follow-ups to confirm them.</div>
+      </div>
+      <div class="type-row">
+        <div class="spec">IBM Plex Mono 400<br>13.5px<br>Keys, queries, data</div>
+        <div class="sp-mono">PHX-121 · project = PHX AND updated &gt;= -7d · idempotencyKey: ooo:c_8f21</div>
+      </div>
+      <div class="type-row">
+        <div class="spec">IBM Plex Mono 400<br>11px / 14% tracking<br>Eyebrows, pills</div>
+        <div class="sp-label">New information · Unverified</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">08 — Voice</div>
+    <h2>An assistant, never the employee</h2>
+    <p class="lede">The product speaks in the first person as a proxy and says so within the first sentence of every call. It never impersonates the person who is away, never guesses beyond its context, and never presents a claim as a fact.</p>
+    <div class="voice">
+      <div class="quote">
+        <span class="tag">Call opening — spoken</span>
+        <span class="said">&ldquo;Hi Raj, this is an AI assistant calling on behalf of Arun, who&rsquo;s out of office this week. I have his Phoenix launch context — can I walk you through where it stands?&rdquo;</span>
+      </div>
+      <div class="quote">
+        <span class="tag">Outside context — spoken</span>
+        <span class="said">&ldquo;I don&rsquo;t have that in Arun&rsquo;s notes, so I won&rsquo;t guess. I&rsquo;ll flag it for him to answer when he&rsquo;s back Monday — anything I should add to that?&rdquo;</span>
+      </div>
+    </div>
+    <div class="rules">
+      <div class="rule"><span class="yes">&ldquo;Karthik reported the API migration testing is complete — unverified.&rdquo;</span><span class="no">&ldquo;The API migration testing is complete.&rdquo;</span></div>
+      <div class="rule"><span class="yes">&ldquo;Arun is back Monday. I&rsquo;ll pass this to him with the call summary.&rdquo;</span><span class="no">&ldquo;I&rsquo;ll take care of it for you.&rdquo;</span></div>
+      <div class="rule"><span class="yes">&ldquo;This is an AI assistant calling on behalf of Arun.&rdquo;</span><span class="no">&ldquo;Hi, it&rsquo;s Arun&rsquo;s office.&rdquo;</span></div>
+      <div class="rule"><span class="yes">Start call</span><span class="no">Initiate outbound engagement</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">09 — In place</div>
+    <h2>Where people actually see it</h2>
+    <p class="lede">Slack is the frontend; there is no dashboard. The identity has to survive at 36&nbsp;px next to an avatar, in a Block Kit card, with no control over the surrounding type.</p>
+    <div class="app">
+      <div class="bar">
+        <svg width="20" height="20" aria-hidden="true"><use href="#tile"/></svg>
+        <span class="who">OOO-Pilot</span>
+        <span class="badge">App</span>
+        <span style="color:var(--muted);font-size:12px;font-family:var(--f-mono)">10:42</span>
+      </div>
+      <div class="body">
+        <div class="title">Call complete — Raj Menon, 4 min 12 s</div>
+        <dl class="kv">
+          <dt>Topic</dt><dd>Phoenix launch readiness</dd>
+          <dt>Covered</dt><dd>PHX-118, PHX-121, PHX-130 status read from Jira</dd>
+          <dt>New</dt><dd><span class="pill pill--claim" style="margin-right:8px"><span class="dot"></span>Claim</span>Client moved the go-live review to Thursday 14:00 IST</dd>
+          <dt>Conflict</dt><dd><span class="pill pill--conflict" style="margin-right:8px"><span class="dot"></span>Discrepancy</span>PHX-121 reads In&nbsp;Progress; Raj says testing is done</dd>
+          <dt>Follow-up</dt><dd>Arun to confirm PHX-121 status before updating Jira</dd>
+        </dl>
+        <button class="btn" type="button">Open handoff summary</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="eyebrow">10 — Assets</div>
+    <h2>What ships in <span style="font-family:var(--f-mono);font-size:.8em">brand/</span></h2>
+    <div class="table-scroll">
+      <table class="files">
+        <thead><tr><th>File</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>logo-icon.svg</td><td>Primary tile, 64&nbsp;px artboard. App icon, avatars, README header.</td></tr>
+          <tr><td>logo-icon-mono.svg</td><td>Single colour, inherits <span style="font-family:var(--f-mono)">currentColor</span>. Inline in UI, one-colour print.</td></tr>
+          <tr><td>logo-lockup-light.svg</td><td>Horizontal lockup for light backgrounds.</td></tr>
+          <tr><td>logo-lockup-dark.svg</td><td>Horizontal lockup for ink backgrounds.</td></tr>
+          <tr><td>app-icon.svg</td><td>1024&nbsp;px full-bleed square. No corner radius — stores and launchers mask their own.</td></tr>
+          <tr><td>app-icon-1024.png</td><td>Submission raster, sRGB, no alpha. Re-render at any size 512–2000&nbsp;px from the SVG.</td></tr>
+          <tr><td>favicon.svg</td><td>16–32&nbsp;px. Outer ring dropped, strokes thickened.</td></tr>
+          <tr><td>tokens.css</td><td>Every colour, face and radius above as CSS custom properties.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="lede" style="font-size:13.5px">The lockups carry live text so they stay editable. Convert the wordmark to outlines before sending either file to a printer or an external party.</p>
+  </section>
+
+</div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  (function () {
+    var toast = document.getElementById('toast');
+    var timer;
+    function say(msg) {
+      toast.textContent = msg;
+      toast.classList.add('on');
+      clearTimeout(timer);
+      timer = setTimeout(function () { toast.classList.remove('on'); }, 1400);
+    }
+    document.getElementById('swatches').addEventListener('click', function (e) {
+      var btn = e.target.closest('.sw');
+      if (!btn) return;
+      var hex = btn.getAttribute('data-hex');
+      try {
+        navigator.clipboard.writeText(hex).then(
+          function () { say(hex + ' copied'); },
+          function () { say(hex); }
+        );
+      } catch (err) {
+        say(hex);
+      }
+    });
+  })();
+</script>

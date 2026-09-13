@@ -1,0 +1,180 @@
+<title>OOO-Pilot Signal Loop</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Single-theme by intent: OOO-Pilot lives in Slack dark and a terminal.
+     Every colour is painted explicitly so the page holds on any host ground. */
+  :root {
+    --ink:      #0E1116;
+    --ink-lift: #141924;
+    --text:     #E6EAF2;
+    --muted:    #96A0B5;
+    --line:     #262D3A;
+    --signal:   #3F7CF7;
+    --f-display: Archivo, 'Helvetica Neue', Arial, sans-serif;
+    --f-mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html { height: 100%; }
+  body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--ink);
+    color: var(--text);
+    font-family: var(--f-mono);
+    display: grid;
+    place-items: center;
+    padding-inline: 24px;
+    padding-block: 64px;
+    overflow-x: hidden;
+  }
+
+  .stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 34px;
+    text-align: center;
+  }
+  /* ambient glow, sized to the mark so it never becomes a background wash */
+  .stage::before {
+    content: "";
+    position: absolute;
+    top: -60px; left: 50%;
+    width: 460px; height: 460px;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(63,124,247,.16) 0%, rgba(63,124,247,0) 66%);
+    pointer-events: none;
+  }
+
+  .mark {
+    position: relative;
+    width: clamp(168px, 42vw, 224px);
+    height: clamp(168px, 42vw, 224px);
+    display: block;
+    overflow: visible;
+  }
+  .mark * { transform-box: view-box; transform-origin: 32px 32px; }
+
+  /* ---- resting mark: always fully drawn ---- */
+  .ring-outer {
+    fill: none;
+    stroke: #E6EAF2;
+    stroke-opacity: .5;
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-dasharray: 74.8 32;
+    transform: rotate(54deg);
+    animation: breathe 2.8s ease-in-out infinite;
+  }
+  .ring-inner {
+    fill: none;
+    stroke: #E6EAF2;
+    stroke-opacity: .9;
+    stroke-width: 3.5;
+  }
+  .core {
+    fill: #FFFFFF;
+    animation: pulse 2.8s ease-in-out infinite;
+  }
+
+  /* ---- the signal leaving through the gap ---- */
+  .emit {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-dasharray: 74.8 32;
+    opacity: 0;
+    animation: emit 2.8s cubic-bezier(.22,.61,.36,1) infinite;
+  }
+  .emit--2 { animation-delay: .93s; }
+  .emit--3 { animation-delay: 1.86s; }
+
+  @keyframes pulse {
+    0%, 62%, 100% { transform: scale(1); }
+    12%           { transform: scale(1.22); }
+    30%           { transform: scale(.97); }
+  }
+  @keyframes breathe {
+    0%, 100% { stroke-opacity: .42; }
+    38%      { stroke-opacity: .62; }
+  }
+  @keyframes emit {
+    0%   { transform: rotate(54deg) scale(1);    opacity: 0; }
+    14%  { opacity: .55; }
+    100% { transform: rotate(54deg) scale(1.85); opacity: 0; }
+  }
+
+  /* ---- type ---- */
+  .name {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: clamp(30px, 7vw, 42px);
+    letter-spacing: -.03em;
+    line-height: 1;
+    margin: 0;
+    color: var(--text);
+  }
+  .tag {
+    margin: -20px 0 0;
+    font-family: var(--f-mono);
+    font-size: 12.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    max-width: 30ch;
+    line-height: 1.7;
+  }
+  .credit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    font-size: 12.5px;
+    letter-spacing: .06em;
+    color: var(--muted);
+  }
+  .credit .rule {
+    width: 44px;
+    height: 1px;
+    background: var(--line);
+  }
+  .credit b {
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .core, .ring-outer, .emit { animation: none; }
+    .emit { display: none; }
+    .ring-outer { stroke-opacity: .5; }
+  }
+</style>
+
+<main class="stage">
+  <svg class="mark" viewBox="0 0 64 64" role="img" aria-label="OOO-Pilot">
+    <!-- signal leaving through the gap, three staggered passes -->
+    <circle class="emit"          cx="32" cy="32" r="17"/>
+    <circle class="emit emit--2"  cx="32" cy="32" r="17"/>
+    <circle class="emit emit--3"  cx="32" cy="32" r="17"/>
+    <!-- the open ring: the person who isn't there -->
+    <circle class="ring-outer" cx="32" cy="32" r="17"/>
+    <!-- the closed ring: verified context -->
+    <circle class="ring-inner" cx="32" cy="32" r="10"/>
+    <!-- the core: the request -->
+    <circle class="core" cx="32" cy="32" r="4"/>
+  </svg>
+
+  <h1 class="name">OOO-Pilot</h1>
+  <p class="tag">An AI work proxy that takes real phone calls</p>
+
+  <div class="credit">
+    <span class="rule"></span>
+    <span>Built by <b>Balaji Anbalagan</b></span>
+  </div>
+</main>

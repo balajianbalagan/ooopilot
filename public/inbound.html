@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Arun's OOO Line</title>
+<style>
+  :root {
+    --bg: #0e1116; --panel: #161b24; --line: #262d3a;
+    --text: #e6eaf2; --muted: #96a0b5; --accent: #4ade80; --accent-dim: #16391f;
+    --warn: #fbbf24;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 16px; background: var(--bg); color: var(--text);
+    font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width: 540px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 24px; font-size: 14px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 22px; margin-bottom: 16px;
+  }
+  .status {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: var(--accent-dim); border: 1px solid #1f5130;
+    border-radius: 10px; padding: 14px 16px; margin-bottom: 22px;
+  }
+  .dot {
+    width: 9px; height: 9px; border-radius: 50%; background: var(--accent);
+    margin-top: 6px; flex: none; box-shadow: 0 0 0 3px rgba(74,222,128,.18);
+  }
+  label { display: block; font-size: 13px; color: var(--muted); margin: 14px 0 6px; }
+  input, textarea {
+    width: 100%; padding: 11px 13px; border-radius: 8px;
+    border: 1px solid var(--line); background: #0f131a; color: var(--text);
+    font: inherit; font-size: 14px;
+  }
+  input:focus, textarea:focus { outline: 2px solid #2d6ef5; outline-offset: -1px; }
+  textarea { min-height: 74px; resize: vertical; }
+  button {
+    width: 100%; margin-top: 20px; padding: 13px; border: 0; border-radius: 8px;
+    background: #2d6ef5; color: #fff; font: inherit; font-weight: 600;
+    font-size: 15px; cursor: pointer;
+  }
+  button:hover { background: #3f7cf7; }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+  #result { margin-top: 18px; font-size: 14px; display: none; }
+  #result.show { display: block; }
+  .ok { color: var(--accent); }
+  .err { color: #f87171; }
+  .note {
+    color: var(--muted); font-size: 12.5px; line-height: 1.5;
+    border-top: 1px solid var(--line); padding-top: 14px; margin-top: 20px;
+  }
+  code { background: #0f131a; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Arun's OOO Line</h1>
+  <p class="sub">Project Lead · Phoenix Mobile App Launch</p>
+
+  <div class="status">
+    <div class="dot"></div>
+    <div>
+      <strong>Arun is out of office.</strong><br />
+      His OOO-Pilot can call you back right now and walk you through the latest
+      verified project status — and record anything you need Arun to follow up on.
+    </div>
+  </div>
+
+  <div class="card">
+    <form id="form">
+      <label for="name">Your name</label>
+      <input id="name" name="name" placeholder="Raj" autocomplete="name" required />
+
+      <label for="phone">Your number (E.164)</label>
+      <input id="phone" name="phone" placeholder="+14155550100" inputmode="tel" required />
+
+      <label for="topic">What do you need to know?</label>
+      <textarea id="topic" name="topic" placeholder="I need an update on the Phoenix launch."></textarea>
+
+      <button type="submit" id="btn">📞 Call me now</button>
+    </form>
+    <div id="result"></div>
+
+    <p class="note">
+      CALL-E is an outbound calling platform, so this line captures your request and
+      returns the call immediately. The same intake accepts a missed call or SMS on a
+      real number via <code>POST /inbound/call</code>.
+    </p>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById("form");
+  const btn = document.getElementById("btn");
+  const result = document.getElementById("result");
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    btn.disabled = true;
+    btn.textContent = "Requesting callback…";
+    result.className = "";
+    result.textContent = "";
+
+    try {
+      const res = await fetch("/inbound/web", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: document.getElementById("name").value,
+          phone: document.getElementById("phone").value,
+          topic: document.getElementById("topic").value || "project status update",
+        }),
+      });
+      const data = await res.json();
+      result.className = "show " + (data.accepted ? "ok" : "err");
+      result.textContent = (data.accepted ? "📞 " : "⚠️ ") + data.message;
+    } catch (err) {
+      result.className = "show err";
+      result.textContent = "⚠️ Could not reach the OOO line: " + err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "📞 Call me now";
+    }
+  });
+</script>
+</body>
+</html>

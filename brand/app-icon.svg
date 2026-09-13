@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="OOO-Pilot">
+  <defs>
+    <linearGradient id="ooo-app" x1="0" y1="0" x2="0" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3F7CF7"/>
+      <stop offset="1" stop-color="#1E4FD0"/>
+    </linearGradient>
+  </defs>
+  <!-- full-bleed square: platforms apply their own corner mask -->
+  <rect width="1024" height="1024" fill="url(#ooo-app)"/>
+  <!-- outer ring: broken at 3 o'clock - the absence, and the call going out through it -->
+  <circle cx="512" cy="512" r="300" fill="none" stroke="#FFFFFF" stroke-opacity="0.5"
+          stroke-width="62" stroke-linecap="round"
+          stroke-dasharray="1319.5 565.5" transform="rotate(54 512 512)"/>
+  <!-- closed ring: the verified context -->
+  <circle cx="512" cy="512" r="176" fill="none" stroke="#FFFFFF" stroke-opacity="0.85" stroke-width="62"/>
+  <!-- core: the request -->
+  <circle cx="512" cy="512" r="70" fill="#FFFFFF"/>
+</svg>

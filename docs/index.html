@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>OOO-Pilot — An AI work proxy that takes real phone calls</title>
+<meta name="description" content="OOO-Pilot is a temporary AI work proxy for an employee who is out of office — it takes real phone calls via CALL-E, using Jira as the source of truth." />
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ink: #0E1116; --surface: #161B24; --surface-2: #1B2230; --line: #262D3A;
+    --text: #E6EAF2; --muted: #96A0B5; --dim: #5A6577;
+    --signal: #2D6EF5; --signal-lit: #3F7CF7; --signal-deep: #1E4FD0;
+    --verified: #4ADE80; --claim: #FBBF24; --conflict: #F87171;
+    --f-display: Archivo, 'Helvetica Neue', Arial, sans-serif;
+    --f-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --f-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--ink); color: var(--text);
+    font-family: var(--f-body); line-height: 1.6;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: var(--signal-lit); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding-inline: 24px; }
+  section { padding-block: 64px; }
+  h1, h2, h3 { font-family: var(--f-display); font-weight: 600; letter-spacing: -0.02em; margin: 0; }
+  .eyebrow {
+    font-family: var(--f-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--signal-lit); margin: 0 0 12px;
+  }
+  .lede { color: var(--muted); font-size: 17px; max-width: 62ch; }
+
+  /* ---------- nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 10; background: rgba(14,17,22,.85); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; padding-block: 14px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+  .brand img { width: 28px; height: 28px; }
+  .brand span { font-family: var(--f-display); font-weight: 600; font-size: 16px; }
+  .navlinks { display: flex; gap: 22px; font-size: 13.5px; }
+  .navlinks a { color: var(--muted); text-decoration: none; }
+  .navlinks a:hover { color: var(--text); }
+  @media (max-width: 640px) { .navlinks { display: none; } }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: 84px 56px; position: relative; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; top: -180px; left: 50%; width: 620px; height: 620px;
+    transform: translateX(-50%); pointer-events: none;
+    background: radial-gradient(circle, rgba(63,124,247,.16) 0%, rgba(63,124,247,0) 68%);
+  }
+  .hero .wrap { position: relative; text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .mark { width: clamp(96px, 20vw, 128px); height: auto; margin-bottom: 26px; }
+  .mark * { transform-box: view-box; transform-origin: 32px 32px; }
+  .ring-outer { fill:none; stroke:#E6EAF2; stroke-opacity:.5; stroke-width:3.5; stroke-linecap:round; stroke-dasharray:74.8 32; transform:rotate(54deg); animation: breathe 2.8s ease-in-out infinite; }
+  .ring-inner { fill:none; stroke:#E6EAF2; stroke-opacity:.9; stroke-width:3.5; }
+  .core { fill:#fff; animation: pulse 2.8s ease-in-out infinite; }
+  .emit { fill:none; stroke:var(--signal-lit); stroke-width:3.5; stroke-linecap:round; stroke-dasharray:74.8 32; opacity:0; animation: emit 2.8s cubic-bezier(.22,.61,.36,1) infinite; }
+  .emit--2 { animation-delay: .93s; } .emit--3 { animation-delay: 1.86s; }
+  @keyframes pulse { 0%,62%,100%{transform:scale(1);} 12%{transform:scale(1.22);} 30%{transform:scale(.97);} }
+  @keyframes breathe { 0%,100%{stroke-opacity:.42;} 38%{stroke-opacity:.62;} }
+  @keyframes emit { 0%{transform:rotate(54deg) scale(1); opacity:0;} 14%{opacity:.55;} 100%{transform:rotate(54deg) scale(1.85); opacity:0;} }
+  @media (prefers-reduced-motion: reduce) { .core,.ring-outer,.emit { animation:none; } .emit{display:none;} }
+
+  .hero h1 { font-size: clamp(32px, 5.4vw, 52px); line-height: 1.06; max-width: 18ch; }
+  .hero h1 .signal { color: var(--signal-lit); }
+  .hero .lede { margin: 20px auto 0; text-align: center; font-size: 18px; }
+  .cta-row { display: flex; gap: 12px; margin-top: 30px; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 9px;
+    font-weight: 600; font-size: 14px; text-decoration: none; border: 1px solid transparent;
+  }
+  .btn.primary { background: linear-gradient(180deg, var(--signal-lit), var(--signal-deep)); color: #fff; }
+  .btn.primary:hover { filter: brightness(1.08); }
+  .btn.ghost { border-color: var(--line); color: var(--text); }
+  .btn.ghost:hover { background: var(--surface); }
+
+  /* ---------- badges ---------- */
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 26px; }
+  .badge {
+    font-family: var(--f-mono); font-size: 11.5px; padding: 5px 12px; border-radius: 20px;
+    border: 1px solid var(--line); color: var(--muted); background: var(--surface);
+  }
+
+  /* ---------- sections ---------- */
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 32px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  @media (max-width: 760px) { .grid-2 { grid-template-columns: 1fr; } }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 760px) { .grid-3 { grid-template-columns: 1fr; } }
+
+  .feature {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px;
+  }
+  .feature .dot { width: 8px; height: 8px; border-radius: 50%; margin-bottom: 14px; }
+  .feature h3 { font-size: 16px; margin-bottom: 8px; }
+  .feature p { color: var(--muted); font-size: 13.5px; margin: 0; }
+
+  .flow {
+    font-family: var(--f-mono); font-size: 13px; color: var(--muted); line-height: 2;
+    background: #0b0e13; border: 1px solid var(--line); border-radius: 12px; padding: 22px 26px;
+    overflow-x: auto; white-space: pre;
+  }
+  .flow .arrow { color: var(--signal-lit); }
+
+  .discrepancy {
+    border: 1px solid #4a3410; background: #1a1407; border-radius: 12px; padding: 16px 18px;
+    font-size: 13.5px; color: #fcd34d; margin-top: 18px; font-family: var(--f-mono); line-height: 1.7;
+  }
+
+  /* ---------- gallery ---------- */
+  figure { margin: 0; }
+  figure img {
+    border-radius: 12px; border: 1px solid var(--line); box-shadow: 0 20px 40px -20px rgba(0,0,0,.5);
+  }
+  figcaption { margin-top: 10px; font-size: 12.5px; color: var(--dim); text-align: center; }
+
+  audio { width: 100%; margin-top: 8px; }
+  audio::-webkit-media-controls-panel { background: var(--surface-2); }
+
+  /* ---------- feedback ---------- */
+  .fb-item {
+    border-left: 3px solid var(--signal); padding: 4px 0 4px 18px; margin-bottom: 22px;
+  }
+  .fb-item h3 { font-size: 15px; margin-bottom: 6px; }
+  .fb-item p { color: var(--muted); font-size: 13.5px; margin: 4px 0 0; }
+  .fb-item ul { margin: 6px 0 0; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
+
+  /* ---------- footer ---------- */
+  footer { border-top: 1px solid var(--line); padding-block: 40px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between; }
+  .foot-links { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13.5px; }
+  .foot-links a { color: var(--muted); text-decoration: none; }
+  .foot-links a:hover { color: var(--text); }
+  .credit { font-size: 12.5px; color: var(--dim); }
+  .credit b { color: var(--text); font-weight: 500; }
+
+  code { background: #0f131a; padding: 1px 6px; border-radius: 5px; font-family: var(--f-mono); font-size: 12px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top">
+      <img src="assets/logo-icon.svg" alt="" />
+      <span>OOO-Pilot</span>
+    </a>
+    <div class="navlinks">
+      <a href="#how-it-works">How it works</a>
+      <a href="#proof">Proof</a>
+      <a href="#feedback">CALL-E feedback</a>
+      <a href="https://github.com/balajianbalagan/ooopilot" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<main id="top">
+
+  <header class="hero">
+    <div class="wrap">
+      <svg class="mark" viewBox="0 0 64 64" role="img" aria-label="OOO-Pilot">
+        <circle class="emit" cx="32" cy="32" r="17"/>
+        <circle class="emit emit--2" cx="32" cy="32" r="17"/>
+        <circle class="emit emit--3" cx="32" cy="32" r="17"/>
+        <circle class="ring-outer" cx="32" cy="32" r="17"/>
+        <circle class="ring-inner" cx="32" cy="32" r="10"/>
+        <circle class="core" cx="32" cy="32" r="4"/>
+      </svg>
+      <p class="eyebrow">CALL-E · Your Code Is Calling — Hackathon Submission</p>
+      <h1>An AI work proxy that<br />takes <span class="signal">real phone calls</span></h1>
+      <p class="lede">
+        When an employee goes out of office, OOO-Pilot temporarily becomes their conversational
+        work proxy — it phones the coworker who needs an update, walks them through verified
+        Jira context, and captures whatever new information comes back.
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="#proof">▶ See it actually ring</a>
+        <a class="btn ghost" href="https://github.com/balajianbalagan/ooopilot" target="_blank" rel="noopener">View source →</a>
+      </div>
+      <div class="badges">
+        <span class="badge">CALL-E SDK — real outbound calls</span>
+        <span class="badge">Jira as source of truth</span>
+        <span class="badge">SQLite, no vector DB</span>
+        <span class="badge">MCP server</span>
+        <span class="badge">Slack Socket Mode</span>
+      </div>
+    </div>
+  </header>
+
+  <section id="problem">
+    <div class="wrap">
+      <p class="eyebrow">The problem</p>
+      <h2 style="font-size:28px; max-width:24ch; margin-bottom:18px;">
+        An auto-responder ends the conversation. A phone call continues it.
+      </h2>
+      <div class="grid-2">
+        <div class="panel">
+          <h3 style="margin-bottom:10px;">What breaks today</h3>
+          <p style="color:var(--muted); font-size:14px;">
+            "Arun is away until Monday" is where the interaction ends. A status bot answers one
+            question in a thread, then loses the thread. Escalating to a manager means someone
+            re-reads Jira and guesses. The requester can't ask a follow-up, can't clarify something
+            ambiguous, and has no way to hand off new information.
+          </p>
+        </div>
+        <div class="panel">
+          <h3 style="margin-bottom:10px;">What OOO-Pilot does instead</h3>
+          <p style="color:var(--muted); font-size:14px;">
+            It becomes a temporary conversational proxy — an AI that <em>calls the coworker back</em>,
+            explains the latest verified status, answers reasonable follow-ups from real context,
+            and asks what the absent employee should know. New information is captured as a
+            <b style="color:var(--claim)">claim</b>, never silently merged into
+            <b style="color:var(--verified)">Jira truth</b>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how-it-works">
+    <div class="wrap">
+      <p class="eyebrow">How it works</p>
+      <h2 style="font-size:28px; margin-bottom:22px;">One flow, real phone calls</h2>
+      <div class="flow">Slack request <span class="arrow">→</span> build context (Jira + SQLite + git) <span class="arrow">→</span> safety check
+<span class="arrow">→</span> CALL-E outbound call <span class="arrow">→</span> real conversation
+<span class="arrow">→</span> structured extraction <span class="arrow">→</span> SQLite
+<span class="arrow">→</span> return-from-OOO summary</div>
+
+      <div class="grid-3" style="margin-top:26px;">
+        <div class="feature">
+          <div class="dot" style="background:var(--verified)"></div>
+          <h3>Jira is authoritative</h3>
+          <p>Issue status and comments sync into SQLite and are treated as ground truth — the agent never invents project status.</p>
+        </div>
+        <div class="feature">
+          <div class="dot" style="background:var(--signal-lit)"></div>
+          <h3>CALL-E does the talking</h3>
+          <p>A real outbound call via <code>@call-e/calle</code>, with a JSON Schema so the conversation comes back structured — questions, answers, new info, follow-ups.</p>
+        </div>
+        <div class="feature">
+          <div class="dot" style="background:var(--claim)"></div>
+          <h3>Claims stay claims</h3>
+          <p>What a coworker says on a call is stored as <code>CONVERSATION</code>-sourced and unverified — until a human confirms it.</p>
+        </div>
+      </div>
+
+      <div class="discrepancy">
+        ⚠️ Jira still shows <b>KAN-12</b> as <b>In Progress</b>, but Raj reported during an OOO call:
+        "the API migration testing is actually complete" — verify this before updating Jira.
+      </div>
+      <p class="lede" style="margin-top:14px; font-size:14px;">
+        That's the feature that pays for the whole system: knowledge that existed only in someone's
+        head, surfaced because a phone call happened and was recorded structurally — not silently
+        merged into Jira.
+      </p>
+    </div>
+  </section>
+
+  <section id="proof">
+    <div class="wrap">
+      <p class="eyebrow">Proof it works</p>
+      <h2 style="font-size:28px; margin-bottom:8px;">A real CALL-E call, not a mockup</h2>
+      <p class="lede" style="margin-bottom:30px;">
+        Screenshots and the actual recorded audio from a live outbound call placed through the
+        CALL-E dashboard, running the exact demo script.
+      </p>
+
+      <div class="grid-2">
+        <figure>
+          <img src="assets/slackbot_image.png" alt="Slack thread showing OOO-Pilot's call offer card and Start Call button" />
+          <figcaption>Slack: the mention → call offer → live "Calling now" status, threaded.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/jira_project.png" alt="Jira board showing the seeded Phoenix demo issues" />
+          <figcaption>Jira: the authoritative board OOO-Pilot syncs from — KAN-9 through KAN-13.</figcaption>
+        </figure>
+      </div>
+
+      <div style="margin-top:22px;">
+        <figure>
+          <img src="assets/heycalle_convo.png" alt="CALL-E dashboard conversation transcript of the real phone call" />
+          <figcaption>
+            The CALL-E dashboard's own transcript of the real call — the agent answering from Jira
+            context, then recording "API migration testing is actually complete" as a claim to confirm.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="panel" style="margin-top:22px;">
+        <h3 style="font-size:15px; margin-bottom:10px;">Listen to the actual call</h3>
+        <audio controls preload="none" src="assets/sample_convo_with_bot.wav">
+          Your browser doesn't support inline audio —
+          <a href="assets/sample_convo_with_bot.wav">download the recording</a>.
+        </audio>
+        <p style="color:var(--dim); font-size:12px; margin:10px 0 0;">
+          Recorded via CALL-E on a real outbound call. Also available at
+          <code>images_and_asset/sample_convo_with_bot.wav</code> in the repo.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="feedback">
+    <div class="wrap">
+      <p class="eyebrow">Feedback for the CALL-E team</p>
+      <h2 style="font-size:28px; margin-bottom:22px;">What I'd ask them to fix next</h2>
+      <div class="panel">
+        <div class="fb-item">
+          <h3>1. A sandbox / connectivity-check mode</h3>
+          <p>
+            I lost real credits to carrier-level failures (international routing, one-concurrent-call
+            limits) that had nothing to do with my integration. A free, short "can you hear me?"
+            connectivity check — separate from a billable task call — would have saved that spend
+            and a lot of debugging time.
+          </p>
+        </div>
+        <div class="fb-item">
+          <h3>2. A lower-latency / no-reasoning mode for the dashboard chatbot</h3>
+          <p>
+            The dashboard assistant plans even for simple responses, which reads slow on a first
+            impression. A "fast" mode without the planning step would help first-time users get to
+            a working call sooner.
+          </p>
+        </div>
+        <div class="fb-item">
+          <h3>3. First-class support for Indian phone numbers</h3>
+          <p>
+            Outbound calls to <code>+91</code> numbers failed consistently (SIP 408/404 across both
+            the shared line and a dedicated US number) despite an early call to the same number
+            succeeding. India is a huge market for this kind of automation — reliable termination
+            there would open it up.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="credit">Built by <b>Balaji Anbalagan</b> for the CALL-E hackathon.</span>
+    <div class="foot-links">
+      <a href="https://balajianbalagan.pages.dev/" target="_blank" rel="noopener">Personal site ↗</a>
+      <a href="mailto:vijibalaji2003@gmail.com">Contact</a>
+      <a href="https://github.com/balajianbalagan/ooopilot" target="_blank" rel="noopener">GitHub repo ↗</a>
+      <a href="https://github.com/balajianbalagan/ooopilot#readme">README</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

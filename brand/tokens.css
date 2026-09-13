@@ -1,0 +1,47 @@
+/* OOO Caller — brand tokens
+ * Dark-first: the product lives in Slack and a terminal.
+ * Accent (Signal Blue) and state colors are deliberately separate sets.
+ */
+:root {
+  /* Ground — slate neutrals biased toward the accent hue */
+  --ooo-ink:        #0E1116;  /* page ground        */
+  --ooo-surface:    #161B24;  /* panels, cards      */
+  --ooo-surface-2:  #1B2230;  /* raised / hover     */
+  --ooo-line:       #262D3A;  /* hairlines, borders */
+
+  /* Text */
+  --ooo-text:       #E6EAF2;
+  --ooo-text-muted: #96A0B5;
+
+  /* Accent */
+  --ooo-signal:     #2D6EF5;  /* primary            */
+  --ooo-signal-lit: #3F7CF7;  /* hover / gradient   */
+  --ooo-signal-deep:#1E4FD0;  /* pressed / gradient */
+
+  /* State — maps to knowledge_items.verified and the discrepancy report */
+  --ooo-verified:   #4ADE80;  /* JIRA, verified = 1           */
+  --ooo-claim:      #FBBF24;  /* CONVERSATION, verified = 0   */
+  --ooo-conflict:   #F87171;  /* Jira ≠ what was said on call */
+
+  /* Type */
+  --ooo-font-display: Archivo, 'Helvetica Neue', Arial, sans-serif;
+  --ooo-font-body:    'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ooo-font-mono:    'IBM Plex Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+
+  /* Form */
+  --ooo-radius:     10px;
+  --ooo-radius-tile: 15px; /* icon tile: 23.4% of size — keep proportional when scaling */
+}
+
+/* Light surfaces — for docs, slides, printed one-pagers */
+:root[data-ooo-theme="light"] {
+  --ooo-ink:        #F6F7FA;
+  --ooo-surface:    #FFFFFF;
+  --ooo-surface-2:  #EEF1F7;
+  --ooo-line:       #DCE1EB;
+  --ooo-text:       #0E1116;
+  --ooo-text-muted: #5A6577;
+  --ooo-verified:   #1A7F43;
+  --ooo-claim:      #9A6400;
+  --ooo-conflict:   #C03434;
+}
