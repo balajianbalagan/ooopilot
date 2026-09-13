@@ -1,8 +1,0 @@
-1) Have a sandbox testing client
-- i wasted around 40 credits for failed calls due to carrier restrictions and international call restrictions from US number to indian phone number
-- maybe we can have some static line that can call for 5 seconds so we can ensure connectivity is up
-
-2) in the chatbot in call-e have two modes one with less/no reasoning and other one with planning mode. the current one takes a long time to plan even for simple responses so that will not be good impression for first time users
-
-3) Provide support for indian phone numbers
-- Service market is huge here where automation has lot of potential
